@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pathal Kitchen | Authentic Malabar Dum Biriyani</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --brand-orange: #ff6a00;
+      --brand-orange-dark: #e35600;
+      --brand-cream: #fff5eb;
+      --brand-white: #ffffff;
+      --text-dark: #1b130c;
+      --text-muted: #7b6354;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.18);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+      --transition-fast: 0.22s ease-out;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #ffe1c4 0, #fff5eb 34%, #fff 70%);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; cursor: pointer; }
+    .page-shell { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .fade-up { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-in { opacity: 0; transition: opacity 0.6s ease-out; }
+    .fade-in.visible { opacity: 1; }
+
+    header {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to right, rgba(255,106,0,0.94), rgba(227,86,0,0.97));
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+    .nav {
+      max-width: 1120px; margin: 0 auto; padding: 0.6rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: nowrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+    .brand-logo {
+      width: 46px; height: 46px; min-width: 46px; border-radius: 16px;
+      overflow: hidden;
+      background: radial-gradient(circle at 0 0, #ffb36a 0, #ff6a00 45%, #b23a00 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.28);
+      animation: floatLogo 4s ease-in-out infinite;
+    }
+    .brand-logo img { width: 140%; height: auto; transform: translateY(3px); }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.1; color: var(--brand-white); }
+    .brand-text span:first-child { font-weight: 700; letter-spacing: 0.04em; font-size: 1.05rem; white-space: nowrap; }
+    .brand-text span:last-child { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.84; white-space: nowrap; }
+
+    .nav-links {
+      display: flex; gap: 1.6rem; align-items: center;
+      font-size: 0.86rem; text-transform: uppercase; letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.86);
+    }
+    .nav-links a { position: relative; padding-bottom: 0.25rem; white-space: nowrap; }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      height: 2px; width: 0; background: #ffe1c4;
+      border-radius: 999px; transition: width var(--transition-fast);
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.4rem 1.2rem; border-radius: var(--radius-pill);
+      background: #fff; color: #e35600; font-weight: 600; font-size: 0.82rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.65);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+      white-space: nowrap;
+    }
+    .nav-cta:hover { transform: translateY(-1px); background: #fff7f0; box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .nav-toggle { display: none; border: none; background: transparent; color: #fff; font-size: 1.22rem; cursor: pointer; flex-shrink: 0; padding: 0.3rem; }
+
+    .hero { background: radial-gradient(circle at top left, #ffb36a 0, #ff6a00 40%, #220d02 100%); color: #fff; }
+    .hero-inner {
+      max-width: 1120px; margin: 0 auto; padding: 2.8rem 1.25rem 2.4rem;
+      display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1.1fr);
+      gap: 2.4rem; align-items: center;
+    }
+    .hero-kicker {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.14rem 0.8rem; border-radius: 999px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.26);
+      font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 0.9rem;
+    }
+    .hero-kicker-dot { width: 8px; height: 8px; min-width: 8px; border-radius: 50%; background: #0ff3b5; box-shadow: 0 0 0 6px rgba(15,243,181,0.2); }
+    .hero-title { font-size: clamp(1.7rem, 4vw, 2.7rem); line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.75rem; word-wrap: break-word; }
+    .hero-title span { display: inline; position: relative; padding-right: 0.2rem; }
+    .hero-title span::after {
+      content: ""; position: absolute; left: 0; bottom: -0.25rem;
+      width: 100%; height: 4px; border-radius: 999px;
+      background: linear-gradient(90deg, #ffe1c4, #fff5eb); opacity: 0.9;
+    }
+    .hero-subtitle { font-size: 0.96rem; max-width: 32rem; color: rgba(255,255,255,0.9); margin-bottom: 1.2rem; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.6rem; }
+    .hero-pill { padding: 0.3rem 0.9rem; border-radius: 999px; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.18); font-size: 0.72rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.4rem; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.4rem; border-radius: 999px; border: none;
+      background: #fff; color: #e35600; font-weight: 600; font-size: 0.9rem; cursor: pointer;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+    .btn-primary:hover { transform: translateY(-1px); background: #fff7f0; box-shadow: 0 22px 50px rgba(0,0,0,0.55); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1.1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.45);
+      background: transparent; color: #fff; font-size: 0.84rem; cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+    }
+    .btn-ghost:hover { background: rgba(0,0,0,0.25); transform: translateY(-1px); border-color: #fff; }
+    .hero-note { font-size: 0.78rem; color: rgba(255,247,240,0.9); }
+    .hero-right { position: relative; }
+    .hero-card {
+      position: relative; border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #ffe1c4 0, #fff 40%, #fff5eb 80%);
+      box-shadow: var(--shadow-soft); padding: 1.4rem 1.4rem 3.5rem;
+      overflow: hidden; transition: transform 0.4s ease-out, box-shadow 0.4s ease-out; color: #2b170a;
+    }
+    .hero-card:hover { transform: translateY(-4px); box-shadow: 0 24px 70px rgba(0,0,0,0.35); }
+    .hero-card::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(255,106,0,0.25), transparent 58%), radial-gradient(circle at 100% 0, rgba(222,83,0,0.22), transparent 60%);
+      pointer-events: none; mix-blend-mode: multiply;
+    }
+    .hero-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; position: relative; z-index: 1; gap: 0.5rem; flex-wrap: wrap; }
+    .hero-card-logo { display: flex; align-items: center; gap: 0.7rem; min-width: 0; flex: 1; }
+    .hero-card-logo-badge { width: 40px; height: 40px; min-width: 40px; border-radius: 14px; overflow: hidden; background: radial-gradient(circle at 0 0, #ffb36a 0, #ff6a00 45%, #b23a00 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(0,0,0,0.32); }
+    .hero-card-logo-badge img { width: 130%; transform: translateY(2px); }
+    .hero-card-logo-text { display: flex; flex-direction: column; min-width: 0; }
+    .hero-card-logo-text span:first-child { font-size: 0.84rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #e35600; white-space: nowrap; }
+    .hero-card-logo-text span:last-child { font-size: 0.65rem; color: #7b6354; word-break: break-word; line-height: 1.3; }
+    .hero-card-rating { display: flex; flex-direction: column; align-items: flex-end; gap: 0.1rem; font-size: 0.72rem; color: #7b6354; flex-shrink: 0; }
+    .hero-card-rating-stars { color: #ffb300; font-size: 0.7rem; white-space: nowrap; }
+    .hero-card-main { position: relative; z-index: 1; }
+    .hero-card-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; color: #1b130c; word-wrap: break-word; }
+    .hero-card-subtitle { font-size: 0.78rem; color: #5a4132; margin-bottom: 0.8rem; }
+    .hero-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px,1fr)); gap: 0.7rem; margin-bottom: 0.9rem; font-size: 0.72rem; color: #5a4132; }
+    .hero-meta > div { min-width: 0; word-break: break-word; }
+    .hero-meta-label { color: #a37c60; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.62rem; margin-bottom: 0.15rem; }
+    .hero-meta-pill { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.55rem; border-radius: 999px; background: rgba(255,106,0,0.08); border: 1px solid rgba(255,106,0,0.18); font-size: 0.65rem; color: #c15100; word-break: break-word; }
+    .hero-card-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.5rem; font-size: 0.7rem; margin-top: 0.5rem; color: #7b6354; padding-bottom: 0.5rem; }
+    .hero-card-footer span { word-break: break-word; flex: 1 1 120px; }
+    .hero-card-footer span i { margin-right: 0.35rem; color: #e35600; }
+    .hero-floating-pill {
+      position: absolute; left: 1.4rem; right: 1.4rem; bottom: 0.9rem;
+      padding: 0.45rem 0.86rem; border-radius: 999px;
+      background: #1e1307; color: #ffe1c4; font-size: 0.68rem;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6); z-index: 2;
+      overflow: hidden; text-overflow: ellipsis;
+      animation: floatPill 4s ease-in-out infinite;
+    }
+    .hero-floating-pill span { font-weight: 600; color: #0ff3b5; flex-shrink: 0; }
+    .hero-floating-pill i { color: #ffb300; flex-shrink: 0; }
+
+    main { flex: 1; }
+    section { padding: 3rem 1.25rem; }
+    .section-inner { max-width: 1120px; margin: 0 auto; }
+    .section-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .section-title-block h2 { font-size: 1.4rem; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+    .section-title-block p { font-size: 0.9rem; color: var(--text-muted); max-width: 30rem; }
+    .section-tag { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #e35600; background: rgba(255,106,0,0.05); border-radius: 999px; padding: 0.35rem 0.9rem; border: 1px solid rgba(255,106,0,0.25); white-space: nowrap; }
+
+    .story-grid { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,1fr); gap: 2rem; align-items: center; }
+    .story-copy p { margin-bottom: 0.7rem; font-size: 0.92rem; color: var(--text-dark); }
+    .story-copy ul { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0.6rem 1.2rem; margin-top: 0.6rem; font-size: 0.9rem; }
+    .story-copy li { display: flex; align-items: flex-start; gap: 0.4rem; color: var(--text-muted); }
+    .story-copy li i { color: #e35600; font-size: 0.85rem; margin-top: 0.15rem; flex-shrink: 0; }
+    .story-card { border-radius: var(--radius-lg); background: linear-gradient(145deg, #fff 0, #fff5eb 34%, #ffe1c4 100%); box-shadow: var(--shadow-soft); padding: 1.2rem 1.4rem; display: grid; gap: 0.8rem; font-size: 0.86rem; position: relative; overflow: hidden; }
+    .story-card::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(255,106,0,0.18) 0, transparent 70%); right: -80px; bottom: -80px; pointer-events: none; }
+    .story-row { display: flex; align-items: flex-start; gap: 0.75rem; color: var(--text-muted); }
+    .story-row i { color: #e35600; margin-top: 0.1rem; flex-shrink: 0; }
+    .story-row span { font-weight: 500; color: var(--text-dark); display: block; margin-bottom: 0.15rem; }
+
+    .menu-grid { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: 1.8rem; align-items: flex-start; }
+    .menu-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.3rem; }
+    .menu-tab { padding: 0.35rem 0.95rem; border-radius: 999px; border: 1px solid rgba(227,86,0,0.35); background: rgba(255,106,0,0.05); font-size: 0.78rem; color: #e35600; cursor: pointer; transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast); box-shadow: 0 8px 22px rgba(0,0,0,0.06); }
+    .menu-tab[data-active="true"] { background: linear-gradient(135deg, #ff6a00, #e35600); color: #fff; box-shadow: 0 14px 30px rgba(0,0,0,0.16); transform: translateY(-1px); }
+    .menu-list { display: grid; gap: 0.9rem; }
+    .menu-item { padding: 0.85rem 1rem; border-radius: var(--radius-lg); background: #fff; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 10px 26px rgba(0,0,0,0.08); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 0.6rem; align-items: center; transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast); }
+    .menu-item:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(0,0,0,0.16); border-color: rgba(227,86,0,0.25); }
+    .menu-item-main { display: flex; flex-direction: column; gap: 0.22rem; min-width: 0; }
+    .menu-item-main h3 { font-size: 0.96rem; word-wrap: break-word; }
+    .menu-item-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; font-size: 0.7rem; color: var(--text-muted); }
+    .menu-item-tags span { padding: 0.12rem 0.5rem; border-radius: 999px; background: rgba(255,106,0,0.06); color: #c15100; }
+    .menu-item-note { font-size: 0.76rem; color: var(--text-muted); }
+    .menu-item-price { text-align: right; font-size: 0.82rem; color: #e35600; font-weight: 600; flex-shrink: 0; white-space: nowrap; }
+    .menu-item-price small { display: block; font-size: 0.68rem; color: var(--text-muted); font-weight: 400; }
+    .menu-side { border-radius: var(--radius-xl); background: linear-gradient(135deg, #ff6a00, #b23600); color: #fff; padding: 1.35rem 1.3rem; box-shadow: 0 18px 45px rgba(0,0,0,0.4); position: sticky; top: 90px; overflow: hidden; }
+    .menu-side::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 0 0, rgba(255,239,220,0.28), transparent 55%), radial-gradient(circle at 100% 100%, rgba(34,5,0,0.6), transparent 60%); opacity: 0.9; pointer-events: none; }
+    .menu-side-content { position: relative; z-index: 1; }
+    .menu-side h3 { font-size: 1.08rem; margin-bottom: 0.45rem; }
+    .menu-side p { font-size: 0.8rem; margin-bottom: 0.9rem; color: rgba(255,247,240,0.88); }
+    .menu-side-row { display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 0.5rem; font-size: 0.78rem; }
+    .menu-side-row i { color: #0ff3b5; flex-shrink: 0; margin-top: 0.15rem; }
+    .menu-side-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.8rem; border-radius: 999px; background: rgba(0,0,0,0.35); font-size: 0.7rem; margin-top: 0.4rem; }
+
+    .info-grid { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr); gap: 1.7rem; }
+    .info-card { border-radius: var(--radius-lg); background: #fff; padding: 1.1rem 1.25rem; box-shadow: 0 12px 35px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.04); font-size: 0.86rem; }
+    .info-card h3 { font-size: 0.96rem; margin-bottom: 0.45rem; }
+    .info-card p { margin-bottom: 0.3rem; color: var(--text-muted); }
+    .info-row { display: flex; align-items: flex-start; gap: 0.5rem; margin-top: 0.3rem; color: var(--text-muted); }
+    .info-row i { color: #e35600; margin-top: 0.12rem; flex-shrink: 0; }
+    .hours-list { margin-top: 0.6rem; border-radius: 16px; background: #fff7f0; padding: 0.5rem 0.7rem; font-size: 0.8rem; }
+    .hours-row { display: flex; justify-content: space-between; padding: 0.16rem 0; color: #78452a; }
+    .hours-row span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; }
+    .hours-row span:last-child { font-weight: 500; }
+
+    footer { background: #1b130c; color: rgba(255,247,240,0.9); padding: 1.8rem 1.25rem 1.4rem; margin-top: 2.2rem; }
+    .footer-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 1.6rem; align-items: center; font-size: 0.82rem; }
+    .footer-brand { display: flex; align-items: center; gap: 0.9rem; }
+    .footer-logo { width: 40px; height: 40px; min-width: 40px; border-radius: 14px; overflow: hidden; background: radial-gradient(circle at 0 0, #ffb36a 0, #ff6a00 45%, #b23a00 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(0,0,0,0.35); }
+    .footer-logo img { width: 130%; transform: translateY(2px); }
+    .footer-brand-text { display: flex; flex-direction: column; min-width: 0; }
+    .footer-brand-text span:first-child { font-weight: 600; letter-spacing: 0.1em; font-size: 0.86rem; text-transform: uppercase; }
+    .footer-brand-text span:last-child { font-size: 0.7rem; color: rgba(255,213,182,0.9); }
+    .footer-meta { display: flex; flex-wrap: wrap; gap: 0.9rem; justify-content: flex-end; text-align: right; }
+    .footer-meta a { color: rgba(255,247,240,0.9); }
+    .footer-meta i { margin-right: 0.4rem; color: #ffb36a; }
+    .footer-meta span { color: rgba(255,200,160,0.9); }
+
+    /* TABLET */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: minmax(0,1fr); padding-top: 1.8rem; }
+      .hero-right { order: -1; }
+      .hero-card { margin-bottom: 0.6rem; }
+      .story-grid, .menu-grid, .info-grid, .footer-inner { grid-template-columns: minmax(0,1fr); }
+      .menu-side { position: static; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 720px) {
+      .nav { padding-inline: 1rem; }
+      .nav-links {
+        position: fixed; inset-inline: 1.1rem; top: 62px;
+        border-radius: 18px; background: rgba(34,10,0,0.97);
+        border: 1px solid rgba(255,255,255,0.12);
+        padding: 0.9rem 1rem 0.7rem;
+        flex-direction: column; align-items: flex-start; gap: 0.7rem;
+        transform-origin: top; transform: scaleY(0.9);
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+      }
+      .nav-links[data-open="true"] { opacity: 1; pointer-events: auto; transform: scaleY(1); }
+      .nav-cta { width: 100%; justify-content: center; }
+      .nav-toggle { display: inline-flex; }
+      section { padding-block: 2.3rem; }
+      .hero-floating-pill { font-size: 0.64rem; left: 1rem; right: 1rem; bottom: 0.75rem; }
+      .hero-card { padding-bottom: 3.2rem; }
+      .hero-card-header { flex-direction: column; }
+      .hero-card-rating { align-items: flex-start; }
+    }
+
+    /* SMALL MOBILE */
+    @media (max-width: 520px) {
+      .story-copy ul { grid-template-columns: minmax(0,1fr); }
+      .hero-inner { padding-bottom: 2rem; }
+      .hero-meta { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .footer-inner { gap: 1.2rem; }
+      .footer-meta { justify-content: flex-start; text-align: left; }
+    }
+
+    /* VERY SMALL */
+    @media (max-width: 400px) {
+      .hero-title { font-size: 1.55rem; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-ghost { justify-content: center; width: 100%; }
+      .hero-meta { grid-template-columns: minmax(0,1fr); }
+      .hero-card-footer { flex-direction: column; }
+      .hero-card-footer span { flex: none; width: 100%; }
+      .menu-item { grid-template-columns: minmax(0,1fr); }
+      .menu-item-price { text-align: left; }
+    }
+
+    @keyframes floatPill { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    @keyframes floatLogo { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+
+    <header>
+      <nav class="nav">
+        <div class="brand fade-in">
+          <div class="brand-logo">
+            <img src="logo.jpg" alt="Pathal Kitchen logo" />
+          </div>
+          <div class="brand-text">
+            <span>Pathal Kitchen</span>
+            <span>Authentic Malabar</span>
+          </div>
+        </div>
+        <button class="nav-toggle" aria-label="Toggle navigation" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <a href="#story">Story</a>
+          <a href="#menu">Menu</a>
+          <a href="#location">Location</a>
+          <a href="#contact">Contact</a>
+          <a href="#order" class="nav-cta"><i class="fas fa-motorcycle"></i><span>Order Now</span></a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero" id="order">
+      <div class="hero-inner">
+        <div class="hero-left fade-up">
+          <div class="hero-kicker">
+            <span class="hero-kicker-dot"></span>
+            <span>Panampilly Nagar · Kochi</span>
+          </div>
+          <h1 class="hero-title">
+            Authentic <span>Malabar Dum Biriyani</span> slow-cooked to perfection.
+          </h1>
+          <p class="hero-subtitle">
+            Pathal Kitchen brings centuries-old Malabar biriyani traditions to Kochi, where every grain of rice is infused with aroma, patience, and passion.
+          </p>
+          <div class="hero-badges">
+            <span class="hero-pill">Traditional dum pots</span>
+            <span class="hero-pill">Handpicked spices</span>
+            <span class="hero-pill">5.0 star rated kitchen</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn-primary" data-scroll="#menu">
+              <i class="fas fa-utensils"></i>
+              <span>View Signature Biriyani</span>
+            </button>
+            <button class="btn-ghost" data-scroll="#location">
+              <i class="fas fa-location-dot"></i>
+              <span>Find us at Panampilly Nagar</span>
+            </button>
+          </div>
+          <p class="hero-note">
+            Dum biriyani served fresh every day, crafted with recipes preserved across generations in Malabar homes.
+          </p>
+        </div>
+
+        <div class="hero-right fade-up">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <div class="hero-card-logo">
+                <div class="hero-card-logo-badge">
+                  <img src="logo.jpg" alt="Pathal Kitchen logo small" />
+                </div>
+                <div class="hero-card-logo-text">
+                  <span>Pathal Kitchen</span>
+                  <span>GCDA Complex, Panampilly Nagar Ave, Kochi</span>
+                </div>
+              </div>
+              <div class="hero-card-rating">
+                <div class="hero-card-rating-stars">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span>Rated 5.0 · Dum biriyani lovers</span>
+              </div>
+            </div>
+            <div class="hero-card-main">
+              <h2 class="hero-card-title">Malabar Dum Biriyani, layered with tradition.</h2>
+              <p class="hero-card-subtitle">
+                Slow-cooked in sealed pots, finished with fragrant ghee, caramelized onions, and hand-ground spice blends.
+              </p>
+              <div class="hero-meta">
+                <div>
+                  <div class="hero-meta-label">LOCATION</div>
+                  <div>GCDA Complex, Panampilly Nagar Ave, Kochi, Kerala 682036</div>
+                </div>
+                <div>
+                  <div class="hero-meta-label">OPEN TODAY</div>
+                  <div class="hero-meta-pill"><i class="fas fa-clock"></i><span>Open all 7 days</span></div>
+                </div>
+                <div>
+                  <div class="hero-meta-label">HIGHLIGHTS</div>
+                  <div class="hero-meta-pill"><i class="fas fa-fire-flame-curved"></i><span>Authentic dum technique</span></div>
+                </div>
+              </div>
+              <div class="hero-card-footer">
+                <span><i class="fas fa-location-dot"></i>Panampilly Nagar · Giri Nagar · GCDA Complex</span>
+                <span><i class="fas fa-phone"></i>Pre-orders &amp; bulk orders welcome</span>
+              </div>
+            </div>
+            <div class="hero-floating-pill">
+              <i class="fas fa-pot-food"></i>
+              <span>Malabar style</span>
+              dum biriyani pots sealed with pure wheat dough.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="story">
+      <div class="section-inner">
+        <div class="section-header fade-up">
+          <div class="section-title-block">
+            <h2>Discover our story</h2>
+            <p>Every Pathal Kitchen biriyani carries the warmth of a home kitchen in Malabar, lovingly recreated in the heart of Kochi.</p>
+          </div>
+          <span class="section-tag">Crafted with patience</span>
+        </div>
+        <div class="story-grid">
+          <div class="story-copy fade-up">
+            <p>The journey of Pathal Kitchen started with a single idea – to serve Kochi the most authentic Malabar dum biriyani, exactly the way it is cooked back home.</p>
+            <p>Each pot is layered with premium rice, expertly marinated meat, and hand-ground spices, then sealed and slow-cooked until every grain soaks in flavour.</p>
+            <ul>
+              <li><i class="fas fa-check-circle"></i><span>Only the finest, hand-selected ingredients enter our kitchen.</span></li>
+              <li><i class="fas fa-check-circle"></i><span>Authentic dum technique perfected over years of practice.</span></li>
+              <li><i class="fas fa-check-circle"></i><span>Spice blends ground fresh daily for every batch.</span></li>
+              <li><i class="fas fa-check-circle"></i><span>Recipes that preserve Malabar's culinary heritage across generations.</span></li>
+            </ul>
+          </div>
+          <div class="story-card fade-up">
+            <div class="story-row">
+              <i class="fas fa-scroll"></i>
+              <div><span>Rooted in tradition</span>Pathal Kitchen is a tribute to the centuries-old art of Malabar biriyani making, where patience is the most important ingredient.</div>
+            </div>
+            <div class="story-row">
+              <i class="fas fa-bowl-rice"></i>
+              <div><span>Every grain matters</span>Rice is layered and steamed so gently that it remains long, fluffy, and fragrant, carrying just enough masala in every bite.</div>
+            </div>
+            <div class="story-row">
+              <i class="fas fa-people-group"></i>
+              <div><span>Crafted for gatherings</span>Whether it is a quiet family dinner or a grand celebration, our biriyani is designed to be the centrepiece of your table.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu">
+      <div class="section-inner">
+        <div class="section-header fade-up">
+          <div class="section-title-block">
+            <h2>Signature dum biriyani menu</h2>
+            <p>Explore a focused menu that celebrates Malabar-style dum biriyani, from single serves to generous family pots.</p>
+          </div>
+          <span class="section-tag">Slow cooked layers</span>
+        </div>
+        <div class="menu-grid">
+          <div class="fade-up">
+            <div class="menu-tabs">
+              <button class="menu-tab" data-active="true">Biriyani pots</button>
+              <button class="menu-tab">Family feasts</button>
+              <button class="menu-tab">Starters &amp; sides</button>
+            </div>
+            <div class="menu-list">
+              <article class="menu-item">
+                <div class="menu-item-main">
+                  <h3>Chicken Malabar Dum Biriyani</h3>
+                  <div class="menu-item-tags"><span>Slow-cooked</span><span>Single serve</span></div>
+                  <p class="menu-item-note">Tender chicken, caramelized onions, and fragrant jeerakasala rice layered in traditional Malabar style.</p>
+                </div>
+                <div class="menu-item-price">₹ <span>—</span><small>Prices as per daily menu</small></div>
+              </article>
+              <article class="menu-item">
+                <div class="menu-item-main">
+                  <h3>Mutton Malabar Dum Biriyani</h3>
+                  <div class="menu-item-tags"><span>Rich &amp; indulgent</span><span>Weekend favourite</span></div>
+                  <p class="menu-item-note">Juicy mutton pieces marinated overnight and slow-cooked until they fall off the bone.</p>
+                </div>
+                <div class="menu-item-price">₹ <span>—</span><small>Limited batches daily</small></div>
+              </article>
+              <article class="menu-item">
+                <div class="menu-item-main">
+                  <h3>Beef Dum Biriyani</h3>
+                  <div class="menu-item-tags"><span>Malabar classic</span><span>Layered spice</span></div>
+                  <p class="menu-item-note">A robust, deeply flavoured biriyani crafted in true Malabar tradition.</p>
+                </div>
+                <div class="menu-item-price">₹ <span>—</span><small>Subject to availability</small></div>
+              </article>
+              <article class="menu-item">
+                <div class="menu-item-main">
+                  <h3>Veg Dum Biriyani</h3>
+                  <div class="menu-item-tags"><span>Slow-cooked</span><span>Veg-friendly</span></div>
+                  <p class="menu-item-note">Seasonal vegetables layered with aromatic rice and gentle Malabar masalas.</p>
+                </div>
+                <div class="menu-item-price">₹ <span>—</span><small>Upon prior request</small></div>
+              </article>
+            </div>
+          </div>
+          <aside class="menu-side fade-up">
+            <div class="menu-side-content">
+              <h3>Order your biriyani pot</h3>
+              <p>Plan your lunch or dinner with pre-orders, and we will have your dum pot sealed, packed, and ready when you arrive.</p>
+              <div class="menu-side-row"><i class="fas fa-phone"></i><span>Call or message to pre-book your biriyani, especially for weekends and special occasions.</span></div>
+              <div class="menu-side-row"><i class="fas fa-bag-shopping"></i><span>Family and party packs available on advance notice.</span></div>
+              <div class="menu-side-badge"><i class="fas fa-star"></i><span>Rated 5.0 by guests in Panampilly Nagar.</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="location">
+      <div class="section-inner">
+        <div class="section-header fade-up">
+          <div class="section-title-block">
+            <h2>Visit Pathal Kitchen</h2>
+            <p>Find us in the heart of Panampilly Nagar, Kochi, surrounded by the everyday buzz of the neighbourhood.</p>
+          </div>
+          <span class="section-tag">Kochi · Kerala</span>
+        </div>
+        <div class="info-grid">
+          <div class="info-card fade-up">
+            <h3>Where we are</h3>
+            <p>GCDA Complex, Panampilly Nagar Ave, Kochi, Ernakulam, Kerala 682036.</p>
+            <div class="info-row"><i class="fas fa-location-dot"></i><span>X77W+47 Kochi, Kerala.</span></div>
+            <div class="info-row"><i class="fas fa-map"></i><span>Located close to Giri Nagar and easily accessible from across the city.</span></div>
+          </div>
+          <div class="info-card fade-up">
+            <h3>Opening hours</h3>
+            <p>We are here to serve authentic Malabar biriyani every day of the week.</p>
+            <div class="hours-list">
+              <div class="hours-row"><span>Monday</span><span>Open</span></div>
+              <div class="hours-row"><span>Tuesday</span><span>Open</span></div>
+              <div class="hours-row"><span>Wednesday</span><span>Open</span></div>
+              <div class="hours-row"><span>Thursday</span><span>Open</span></div>
+              <div class="hours-row"><span>Friday</span><span>Open</span></div>
+              <div class="hours-row"><span>Saturday</span><span>Open</span></div>
+              <div class="hours-row"><span>Sunday</span><span>Open</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-inner">
+        <div class="section-header fade-up">
+          <div class="section-title-block">
+            <h2>Stay connected</h2>
+            <p>Follow our journey, drop a message, or plan your next biriyani gathering with Pathal Kitchen.</p>
+          </div>
+          <span class="section-tag">Say hello</span>
+        </div>
+        <div class="info-grid">
+          <div class="info-card fade-up">
+            <h3>Visit us</h3>
+            <p>GCDA Complex, Panampilly Nagar, Kochi, Kerala 682036.</p>
+            <div class="info-row"><i class="fas fa-location-arrow"></i><span>Walk in, pick up your dum biriyani, and take a piece of Malabar home.</span></div>
+          </div>
+          <div class="info-card fade-up">
+            <h3>Connect online</h3>
+            <p>Stay tuned for specials, new batches, and behind-the-scenes from our kitchen.</p>
+            <div class="info-row"><i class="fab fa-instagram"></i><span>Follow Pathal Kitchen on Instagram for daily updates and biriyani stories.</span></div>
+            <div class="info-row"><i class="fas fa-message"></i><span>Send us a DM for bulk orders, party packs, and collaboration enquiries.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand fade-in">
+          <div class="footer-logo">
+            <img src="logo.jpg" alt="Pathal Kitchen logo footer" />
+          </div>
+          <div class="footer-brand-text">
+            <span>PATHAL KITCHEN</span>
+            <span>Authentic Malabar Dum Biriyani · Kochi</span>
+          </div>
+        </div>
+        <div class="footer-meta fade-in">
+          <span>&copy; <span id="year"></span> Pathal Kitchen. All rights reserved.</span>
+          <a href="#location"><i class="fas fa-location-dot"></i>Panampilly Nagar, Kochi</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.getAttribute("data-open") === "true";
+      navLinks.setAttribute("data-open", String(!isOpen));
+      navToggle.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-xmark"></i>';
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.setAttribute("data-open", "false");
+        navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+      });
+    });
+
+    document.querySelectorAll("[data-scroll]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const el = document.querySelector(btn.getAttribute("data-scroll"));
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll(".fade-up, .fade-in").forEach((el) => observer.observe(el));
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
